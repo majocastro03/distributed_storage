@@ -22,10 +22,8 @@ servidor\aplicacion\soap\AuthServiceSOAPImpl.class
 servidor\aplicacion\util\UserConverter.class
 servidor\aplicacion\dao\OperationLogDAO.class
 servidor\aplicacion\model\Node.class
-servidor\aplicacion\client\RMITestClient.class
 servidor\aplicacion\dto\LoginRequest.class
 servidor\aplicacion\rmi\FileServiceRMI.class
-servidor\aplicacion\client\AuthRMITestClient.class
 servidor\aplicacion\rmi\AuthServiceRMI.class
 servidor\aplicacion\dto\LoginResponseSOAP.class
 servidor\aplicacion\service\DatabaseClient.class

@@ -21,8 +21,6 @@ C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\soap\FileServiceSOAP.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\config\DatabaseConnection.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dao\FileChunkDAO.java
-C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\client\RMITestClient.java
-C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\client\AuthRMITestClient.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\App.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\FileServiceRMI.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\DatabaseClientImpl.java

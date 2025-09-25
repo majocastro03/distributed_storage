@@ -1,0 +1,3 @@
+backend\cliente\App.class
+backend\cliente\AuthRMITestClient.class
+backend\cliente\RMITestClient.class

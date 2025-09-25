@@ -1,4 +1,4 @@
-package servidor.aplicacion.client;
+package backend.cliente;
 
 import servidor.aplicacion.dto.LoginResponse;
 import servidor.aplicacion.dto.UserDTO;
