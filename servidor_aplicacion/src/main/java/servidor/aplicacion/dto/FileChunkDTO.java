@@ -1,8 +1,8 @@
-package servidor.aplicacion.model;
+package servidor.aplicacion.dto;
 
 import java.sql.Timestamp;
-
-public class FileChunk {
+// NO TOCAR, FALTA PROBAR
+public class FileChunkDTO {
     private Integer id;
     private Long fileId;
     private Long nodeId;
@@ -10,21 +10,19 @@ public class FileChunk {
     private String checksum;
     private Boolean replicated;
     private Timestamp createdAt;
+    private String nodeInfo;
 
-    public FileChunk() {
-        this.replicated = false;
+    public FileChunkDTO() {
     }
 
-    public FileChunk(Long fileId, Long nodeId, Integer chunkIndex) {
-        this();
+    public FileChunkDTO(Integer id, Long fileId, Long nodeId, Integer chunkIndex,
+            String checksum, Boolean replicated) {
+        this.id = id;
         this.fileId = fileId;
         this.nodeId = nodeId;
         this.chunkIndex = chunkIndex;
-    }
-
-    public FileChunk(Long fileId, Long nodeId, Integer chunkIndex, String checksum) {
-        this(fileId, nodeId, chunkIndex);
         this.checksum = checksum;
+        this.replicated = replicated;
     }
 
     public Integer getId() {
@@ -83,16 +81,32 @@ public class FileChunk {
         this.createdAt = createdAt;
     }
 
+    public String getNodeInfo() {
+        return nodeInfo;
+    }
+
+    public void setNodeInfo(String nodeInfo) {
+        this.nodeInfo = nodeInfo;
+    }
+
     public boolean isReplicated() {
         return replicated != null && replicated;
     }
 
-    public void markAsReplicated() {
-        this.replicated = true;
+    public Integer getChunkNumber() {
+        return chunkIndex;
     }
 
-    public void markAsNotReplicated() {
-        this.replicated = false;
+    public void setChunkNumber(Integer chunkNumber) {
+        this.chunkIndex = chunkNumber;
+    }
+
+    public String getChunkHash() {
+        return checksum;
+    }
+
+    public void setChunkHash(String chunkHash) {
+        this.checksum = chunkHash;
     }
 
     public String getUniqueKey() {
@@ -101,13 +115,14 @@ public class FileChunk {
 
     @Override
     public String toString() {
-        return "FileChunk{" +
+        return "FileChunkDTO{" +
                 "id=" + id +
                 ", fileId=" + fileId +
                 ", nodeId=" + nodeId +
                 ", chunkIndex=" + chunkIndex +
                 ", checksum='" + checksum + '\'' +
                 ", replicated=" + replicated +
+                ", nodeInfo='" + nodeInfo + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }
@@ -119,13 +134,13 @@ public class FileChunk {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        FileChunk fileChunk = (FileChunk) o;
+        FileChunkDTO that = (FileChunkDTO) o;
 
-        if (!fileId.equals(fileChunk.fileId))
+        if (!fileId.equals(that.fileId))
             return false;
-        if (!nodeId.equals(fileChunk.nodeId))
+        if (!nodeId.equals(that.nodeId))
             return false;
-        return chunkIndex.equals(fileChunk.chunkIndex);
+        return chunkIndex.equals(that.chunkIndex);
     }
 
     @Override
@@ -134,32 +149,5 @@ public class FileChunk {
         result = 31 * result + nodeId.hashCode();
         result = 31 * result + chunkIndex.hashCode();
         return result;
-    }
-    
-    public int getChunkNumber() {
-        return chunkIndex != null ? chunkIndex : 0;
-    }
-    
-    public void setChunkNumber(int chunkNumber) {
-        this.chunkIndex = chunkNumber;
-    }
-    
-    public String getChunkHash() {
-        return checksum;
-    }
-    
-    public void setChunkHash(String chunkHash) {
-        this.checksum = chunkHash;
-    }
-    
-    public int getSize() {
-        return 1024 * 1024; // 1MB
-    }
-    
-    public void setSize(int size) {
-    }
-    
-    public void setCreatedAt(java.time.LocalDateTime createdAt) {
-        this.createdAt = java.sql.Timestamp.valueOf(createdAt);
     }
 }

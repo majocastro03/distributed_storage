@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+//ARCHIVO CORRECTO NO TOCAR CONECTA BIEN :)
 public class DatabaseConnection {
     private static String url;
     private static String username;
@@ -19,9 +20,6 @@ public class DatabaseConnection {
             url = props.getProperty("db.url");
             username = props.getProperty("db.username");
             password = props.getProperty("db.password");
-
-            // Registrar el driver (no siempre necesario en Java >=6)
-            Class.forName(props.getProperty("db.driver"));
 
         } catch (Exception e) {
             e.printStackTrace();

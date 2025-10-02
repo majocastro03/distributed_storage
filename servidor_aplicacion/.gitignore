@@ -1,0 +1,19 @@
+# Ignorar archivos compilados de Java
+*.class
+
+# Ignorar archivos de log
+*.log
+
+# Ignorar archivos de BlueJ
+*.ctxt
+
+# Ignorar carpetas generadas por IDEs
+.idea/
+.vscode/
+*.iml
+
+# Ignorar directorios de compilación comunes
+out/
+bin/
+build/
+target/

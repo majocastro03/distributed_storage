@@ -1,12 +1,16 @@
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\model\User.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\util\UserConverter.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\UploadFileRequest.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\model\OperationLog.java
-C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\NodeService.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\LoginResponseSOAP.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\StorageNodesLauncher.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\DistributedFileService.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\AuthServiceRMI.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\util\FileConverter.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\NodeIntegratedService.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\soap\AuthServiceSOAPImpl.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\FileServiceRMIImpl.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\util\FileChunkConverter.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\StorageNode.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\AuthService.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\LoginRequest.java
@@ -21,9 +25,9 @@ C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\soap\FileServiceSOAP.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\config\DatabaseConnection.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dao\FileChunkDAO.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\StorageNodeServer.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\App.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\FileServiceRMI.java
-C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\DatabaseClientImpl.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\interfaces\NodeInterface.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\manager\NodeManager.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dao\FileDAO.java
@@ -31,7 +35,7 @@ C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\soap\FileServiceSOAPImpl.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\FileDTO.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\interfaces\FileInterface.java
-C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\service\DatabaseClient.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\FileChunkDTO.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\AuthServiceRMIImpl.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\RMIStorageNodeClient.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\model\File.java

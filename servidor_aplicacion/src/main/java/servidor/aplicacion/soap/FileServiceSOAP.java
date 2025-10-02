@@ -6,7 +6,7 @@ import jakarta.jws.WebService;
 import servidor.aplicacion.dto.FileDTO;
 import java.util.List;
 
-@WebService(name = "FileService")
+@WebService(name = "FileService", targetNamespace = "http://soap.aplicacion.servidor/")
 public interface FileServiceSOAP {
     
     @WebMethod
