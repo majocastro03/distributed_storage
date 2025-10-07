@@ -1,20 +1,21 @@
-package servidor.aplicacion.rmi;
+package servidor.aplicacion.rmi.services;
 
 import servidor.aplicacion.dao.FileDAO;
 import servidor.aplicacion.dto.FileDTO;
 import servidor.aplicacion.model.File;
-import servidor.aplicacion.service.FileService;
+import servidor.aplicacion.rmi.interfaces.FileInterfaceRMI;
+import servidor.aplicacion.services.FileService;
 import servidor.aplicacion.util.FileConverter;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class FileServiceRMIImpl extends UnicastRemoteObject implements FileServiceRMI {
+public class FileServiceRMI extends UnicastRemoteObject implements FileInterfaceRMI {
     
     private final FileService fileService;
     
-    public FileServiceRMIImpl() throws RemoteException {
+    public FileServiceRMI() throws RemoteException {
         super();
         this.fileService = new FileService(new FileDAO());
     }

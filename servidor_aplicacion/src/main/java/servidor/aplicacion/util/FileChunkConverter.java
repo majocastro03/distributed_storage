@@ -9,8 +9,6 @@ import java.util.List;
 
 public class FileChunkConverter {
 
-    // Convierte FileChunk entity a DTO
-
     public static FileChunkDTO toDTO(FileChunk chunk) {
         if (chunk == null) {
             return null;

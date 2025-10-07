@@ -1,18 +1,19 @@
-package servidor.aplicacion.rmi;
+package servidor.aplicacion.rmi.services;
 
 import servidor.aplicacion.dto.LoginResponse;
 import servidor.aplicacion.dto.UserDTO;
-import servidor.aplicacion.service.AuthService;
+import servidor.aplicacion.rmi.interfaces.AuthInterfaceRMI;
+import servidor.aplicacion.services.AuthService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class AuthServiceRMIImpl extends UnicastRemoteObject implements AuthServiceRMI {
+public class AuthServiceRMI extends UnicastRemoteObject implements AuthInterfaceRMI {
 
     private final AuthService authService;
 
-    public AuthServiceRMIImpl() throws RemoteException {
+    public AuthServiceRMI() throws RemoteException {
         super();
         this.authService = new AuthService();
     }

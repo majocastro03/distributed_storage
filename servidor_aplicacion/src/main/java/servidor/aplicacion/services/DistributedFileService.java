@@ -1,4 +1,4 @@
-package servidor.aplicacion.service;
+package servidor.aplicacion.services;
 
 import servidor.aplicacion.dao.FileDAO;
 import servidor.aplicacion.dao.FileChunkDAO;
@@ -6,7 +6,7 @@ import servidor.aplicacion.manager.NodeManager;
 import servidor.aplicacion.model.File;
 import servidor.aplicacion.model.FileChunk;
 import servidor.aplicacion.model.Node;
-import servidor.aplicacion.rmi.RMIStorageNodeClient;
+import servidor.aplicacion.rmi.nodes.RMIStorageNodeClient;
 import servidor.aplicacion.interfaces.FileInterface;
 
 import java.util.*;

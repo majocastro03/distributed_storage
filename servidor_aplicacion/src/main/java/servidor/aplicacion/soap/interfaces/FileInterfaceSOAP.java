@@ -1,4 +1,4 @@
-package servidor.aplicacion.soap;
+package servidor.aplicacion.soap.interfaces;
 
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
@@ -6,8 +6,8 @@ import jakarta.jws.WebService;
 import servidor.aplicacion.dto.FileDTO;
 import java.util.List;
 
-@WebService(name = "FileService", targetNamespace = "http://soap.aplicacion.servidor/")
-public interface FileServiceSOAP {
+@WebService(name = "FileInterfaceSOAP", targetNamespace = "http://soap.aplicacion.servidor/")
+public interface FileInterfaceSOAP {
     
     @WebMethod
     FileDTO uploadFile(@WebParam(name = "name") String name,

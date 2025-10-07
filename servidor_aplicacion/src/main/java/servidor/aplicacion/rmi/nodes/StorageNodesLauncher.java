@@ -1,4 +1,4 @@
-package servidor.aplicacion.rmi;
+package servidor.aplicacion.rmi.nodes;
 
 import java.io.File;
 import java.util.ArrayList;

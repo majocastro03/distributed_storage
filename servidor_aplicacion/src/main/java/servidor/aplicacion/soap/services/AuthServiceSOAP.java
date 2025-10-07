@@ -1,23 +1,24 @@
-package servidor.aplicacion.soap;
+package servidor.aplicacion.soap.services;
 
 import jakarta.jws.WebService;
 import servidor.aplicacion.dto.LoginRequest;
 import servidor.aplicacion.dto.LoginResponse;
 import servidor.aplicacion.dto.LoginResponseSOAP;
 import servidor.aplicacion.dto.UserDTO;
-import servidor.aplicacion.service.AuthService;
-import servidor.aplicacion.service.NodeIntegratedService;
+import servidor.aplicacion.services.AuthService;
+import servidor.aplicacion.services.NodeIntegratedService;
+import servidor.aplicacion.soap.interfaces.AuthInterfaceSOAP;
 import servidor.aplicacion.App;
 import java.util.List;
 import java.util.logging.Logger;
 
-@WebService(endpointInterface = "servidor.aplicacion.soap.AuthServiceSOAP")
-public class AuthServiceSOAPImpl implements AuthServiceSOAP {
+@WebService(endpointInterface = "servidor.aplicacion.soap.interfaces.AuthInterfaceSOAP")
+public class AuthServiceSOAP implements AuthInterfaceSOAP {
 
-    private static final Logger logger = Logger.getLogger(AuthServiceSOAPImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(AuthServiceSOAP.class.getName());
     private final AuthService authService;
 
-    public AuthServiceSOAPImpl() {
+    public AuthServiceSOAP() {
         this.authService = new AuthService();
     }
 

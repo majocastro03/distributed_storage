@@ -1,4 +1,4 @@
-package servidor.aplicacion.rmi;
+package servidor.aplicacion.rmi.nodes;
 
 import servidor.aplicacion.interfaces.NodeInterface;
 

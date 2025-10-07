@@ -1,4 +1,4 @@
-package servidor.aplicacion.service;
+package servidor.aplicacion.services;
 
 import servidor.aplicacion.dao.UserDAO;
 import servidor.aplicacion.dto.UserDTO;

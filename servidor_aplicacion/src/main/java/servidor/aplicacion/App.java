@@ -7,12 +7,12 @@ import java.util.List;
 import jakarta.xml.ws.Endpoint;
 
 import servidor.aplicacion.config.DatabaseConnection;
-import servidor.aplicacion.rmi.FileServiceRMIImpl;
-import servidor.aplicacion.rmi.AuthServiceRMIImpl;
-import servidor.aplicacion.rmi.StorageNodesLauncher;
-import servidor.aplicacion.soap.FileServiceSOAPImpl;
-import servidor.aplicacion.soap.AuthServiceSOAPImpl;
-import servidor.aplicacion.service.NodeIntegratedService;
+import servidor.aplicacion.rmi.nodes.StorageNodesLauncher;
+import servidor.aplicacion.rmi.services.AuthServiceRMI;
+import servidor.aplicacion.rmi.services.FileServiceRMI;
+import servidor.aplicacion.services.NodeIntegratedService;
+import servidor.aplicacion.soap.services.AuthServiceSOAP;
+import servidor.aplicacion.soap.services.FileServiceSOAP;
 
 /**
  * Servidor de Aplicación Distribuido
@@ -97,16 +97,12 @@ public class App {
             Registry registry = LocateRegistry.createRegistry(RMI_PORT);
 
             // Crear implementaciones de los servicios
-            FileServiceRMIImpl fileServiceRMI = new FileServiceRMIImpl();
-            AuthServiceRMIImpl authServiceRMI = new AuthServiceRMIImpl();
+            FileServiceRMI fileServiceRMI = new FileServiceRMI();
+            AuthServiceRMI authServiceRMI = new AuthServiceRMI();
 
             // Registrar los servicios
             registry.bind(FILE_RMI_SERVICE_NAME, fileServiceRMI);
             registry.bind(AUTH_RMI_SERVICE_NAME, authServiceRMI);
-
-            System.out.println("RMI iniciado - Puerto " + RMI_PORT);
-            System.out.println("FileService: OK");
-            System.out.println("AuthService: OK");
 
         } catch (Exception e) {
             System.err.println("Error al iniciar servidor RMI:");
@@ -117,8 +113,8 @@ public class App {
     private static void startSOAPServer() {
         try {
             // Crear implementaciones de los servicios SOAP
-            FileServiceSOAPImpl fileServiceSOAP = new FileServiceSOAPImpl();
-            AuthServiceSOAPImpl authServiceSOAP = new AuthServiceSOAPImpl();
+            FileServiceSOAP fileServiceSOAP = new FileServiceSOAP();
+            AuthServiceSOAP authServiceSOAP = new AuthServiceSOAP();
 
             // Publicar los servicios
             Endpoint fileEndpoint = Endpoint.publish(FILE_SOAP_URL, fileServiceSOAP);
@@ -181,9 +177,9 @@ public class App {
             if (nodeService != null) {
                 List<servidor.aplicacion.model.Node> onlineNodes = nodeService.getOnlineNodes();
                 System.out.println("\nNodos: " + onlineNodes.size() + " online");
-                
+
                 nodeService.checkNodeHealth();
-                
+
                 for (servidor.aplicacion.model.Node node : onlineNodes) {
                     System.out.println("Nodo " + node.getPort() + " - responde OK");
                 }

@@ -1,4 +1,4 @@
-package servidor.aplicacion.soap;
+package servidor.aplicacion.soap.interfaces;
 
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
@@ -8,8 +8,8 @@ import servidor.aplicacion.dto.LoginResponseSOAP;
 import servidor.aplicacion.dto.UserDTO;
 import java.util.List;
 
-@WebService(name = "AuthService", targetNamespace = "http://soap.aplicacion.servidor/")
-public interface AuthServiceSOAP {
+@WebService(name = "AuthInterfaceSOAP", targetNamespace = "http://soap.aplicacion.servidor/")
+public interface AuthInterfaceSOAP {
 
     @WebMethod(operationName = "login")
     @WebResult(name = "loginFullResponse")

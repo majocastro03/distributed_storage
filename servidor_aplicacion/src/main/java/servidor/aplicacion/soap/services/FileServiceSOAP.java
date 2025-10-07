@@ -1,34 +1,27 @@
-package servidor.aplicacion.soap;
-
-import jakarta.jws.WebMethod;
+package servidor.aplicacion.soap.services;
 import jakarta.jws.WebService;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElementWrapper;
 import servidor.aplicacion.dao.FileDAO;
 import servidor.aplicacion.dao.FileChunkDAO;
 import servidor.aplicacion.dto.FileDTO;
 import servidor.aplicacion.manager.NodeManager;
 import servidor.aplicacion.model.File;
-import servidor.aplicacion.service.DistributedFileService;
+import servidor.aplicacion.services.DistributedFileService;
+import servidor.aplicacion.soap.interfaces.FileInterfaceSOAP;
 import servidor.aplicacion.util.FileConverter;
-
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * Implementación SOAP que usa el sistema distribuido de archivos
- * Permite testing con Postman y herramientas SOAP
- */
-@WebService(endpointInterface = "servidor.aplicacion.soap.FileServiceSOAP")
-public class FileServiceSOAPImpl implements FileServiceSOAP {
+//Implementación SOAP que usa el sistema distribuido de archivos
+// Permite testing con Postman y herramientas SOAP
+@WebService(endpointInterface = "servidor.aplicacion.soap.interfaces.FileInterfaceSOAP")
+public class FileServiceSOAP implements FileInterfaceSOAP {
 
     
-    private static final Logger logger = Logger.getLogger(FileServiceSOAPImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(FileServiceSOAP.class.getName());
     private final DistributedFileService distributedFileService;
     
-    public FileServiceSOAPImpl() {
+    public FileServiceSOAP() {
         // Inicializar el servicio distribuido con todas las dependencias
         FileDAO fileDAO = new FileDAO();
         FileChunkDAO fileChunkDAO = new FileChunkDAO();
@@ -112,7 +105,7 @@ public class FileServiceSOAPImpl implements FileServiceSOAP {
                         fileDTO.getParentId(),
                         fileDTO.getOwnerId(),
                         fileDTO.getType(),
-                        fileDTO.getData() // requiere campo 'data' en FileDTO
+                        fileDTO.getData()
                     );
                     result.add(uploaded);
                 }

@@ -27,3 +27,5 @@ target/
 *.dat
 
 *.lst
+
+target/**/*.class

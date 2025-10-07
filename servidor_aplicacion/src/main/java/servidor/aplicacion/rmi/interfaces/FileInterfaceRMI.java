@@ -1,11 +1,11 @@
-package servidor.aplicacion.rmi;
+package servidor.aplicacion.rmi.interfaces;
 
 import servidor.aplicacion.dto.FileDTO;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface FileServiceRMI extends Remote {
+public interface FileInterfaceRMI extends Remote {
     
     FileDTO uploadFile(String name, Long parentId, Long ownerId, Integer type, byte[] data) 
             throws RemoteException, Exception;
