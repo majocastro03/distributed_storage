@@ -52,35 +52,13 @@ public class AuthService {
             // Generar token de sesión
             String sessionToken = generateSessionToken();
 
-            // Convertir a DTO (sin password)
-            UserDTO userDTO = UserConverter.toDTO(user);
-
-            return new LoginResponse(true, "Login successful", userDTO, sessionToken);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new LoginResponse(false, "Internal server error: " + e.getMessage());
-        }
-    }
-
-    public LoginResponse loginWithSimpleHash(String username, String password) {
-        try {
-            // Buscar usuario
-            User user = userDAO.findByUsername(username.trim());
-
-            if (user == null) {
-                return new LoginResponse(false, "Invalid username or password");
-            }
-
-            // Para usuarios de prueba que tienen hash simple como "hash_alice"
-            String expectedHash = "hash_" + username;
-
-            if (!user.getPasswordHash().equals(expectedHash)) {
-                return new LoginResponse(false, "Invalid username or password");
-            }
-
-            // Generar token de sesión
-            String sessionToken = generateSessionToken();
+            // Guardar la sesión en la base de datos
+            servidor.aplicacion.dao.SessionDAO sessionDAO = new servidor.aplicacion.dao.SessionDAO();
+            java.sql.Timestamp createdAt = new java.sql.Timestamp(System.currentTimeMillis());
+            // Por ejemplo, expira en 24 horas
+            java.sql.Timestamp expiresAt = new java.sql.Timestamp(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+            servidor.aplicacion.model.Session session = new servidor.aplicacion.model.Session(0, user.getId(), sessionToken, createdAt, expiresAt);
+            sessionDAO.saveSession(session);
 
             // Convertir a DTO (sin password)
             UserDTO userDTO = UserConverter.toDTO(user);

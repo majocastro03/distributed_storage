@@ -20,18 +20,11 @@ public class AuthServiceRMIImpl extends UnicastRemoteObject implements AuthServi
     @Override
     public LoginResponse login(String username, String password) throws RemoteException {
         try {
-            return authService.loginWithSimpleHash(username, password);
+            // Usar el método login principal
+            servidor.aplicacion.dto.LoginRequest request = new servidor.aplicacion.dto.LoginRequest(username, password);
+            return authService.login(request);
         } catch (Exception e) {
             throw new RemoteException("Error during login: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public LoginResponse loginSimple(String username, String password) throws RemoteException {
-        try {
-            return authService.loginWithSimpleHash(username, password);
-        } catch (Exception e) {
-            throw new RemoteException("Error during simple login: " + e.getMessage(), e);
         }
     }
 

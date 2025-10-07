@@ -45,7 +45,8 @@ public class DistributedFileService implements FileInterface {
 
     @Override
     public File uploadFile(File file, byte[] data, long userId) throws Exception {
-        logger.info("Iniciando upload distribuido para archivo: " + file.getName());
+    logger.info("Iniciando upload distribuido para archivo: " + file.getName());
+    logger.info("Tamaño de datos recibidos: " + (data != null ? data.length : "null"));
 
         // Verificar permisos de usuario
         if (file.getOwnerId() != userId) {
@@ -174,42 +175,37 @@ public class DistributedFileService implements FileInterface {
      * Distribuye chunks a nodos disponibles con replicación
      */
     private void distributeChunks(Long fileId, List<byte[]> chunks) throws Exception {
+        logger.info("Iniciando distribución de chunks para archivo ID: " + fileId);
+        logger.info("Cantidad de chunks a distribuir: " + chunks.size());
         List<Node> availableNodes = nodeManager.getOnlineNodes();
-
+        logger.info("Nodos disponibles: " + availableNodes.size());
         if (availableNodes.size() < REPLICATION_FACTOR) {
+            logger.severe("No hay suficientes nodos disponibles para replicación. Requeridos: " + REPLICATION_FACTOR);
             throw new Exception("No hay suficientes nodos disponibles para replicación");
         }
-
-        // Lista para almacenar tareas asíncronas
         List<CompletableFuture<Void>> futures = new ArrayList<>();
-
         for (int i = 0; i < chunks.size(); i++) {
             final int chunkIndex = i;
             final byte[] chunkData = chunks.get(i);
             final String chunkHash = calculateHash(chunkData);
-
-            // Seleccionar nodos para este chunk (con replicación)
+            logger.info("Preparando chunk " + chunkIndex + " (hash: " + chunkHash + ", tamaño: " + chunkData.length + ")");
             List<Node> selectedNodes = selectNodesForChunk(availableNodes, chunkIndex);
-
+            logger.info("Chunk " + chunkIndex + " será distribuido a " + selectedNodes.size() + " nodos");
             for (Node node : selectedNodes) {
-                // Crear tarea asíncrona para almacenar chunk
+                logger.info("Enviando chunk " + chunkIndex + " al nodo ID: " + node.getId() + " IP: " + node.getIp() + ":" + node.getPort());
                 CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                     try {
                         storeChunkInNode(fileId, chunkIndex, chunkData, chunkHash, node);
                     } catch (Exception e) {
-                        logger.severe("Error almacenando chunk " + chunkIndex + " en nodo " +
-                                node.getIp() + ":" + node.getPort() + " - " + e.getMessage());
-                        // Marcar nodo como problemático
+                        logger.severe("Error almacenando chunk " + chunkIndex + " en nodo " + node.getIp() + ":" + node.getPort() + " - " + e.getMessage());
                         nodeManager.markNodeAsOffline(node.getId());
                     }
                 }, executorService);
-
                 futures.add(future);
             }
         }
-
-        // Esperar a que todas las tareas terminen
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        logger.info("Distribución de chunks finalizada para archivo ID: " + fileId);
     }
 
     /**
@@ -218,35 +214,29 @@ public class DistributedFileService implements FileInterface {
     private void storeChunkInNode(Long fileId, int chunkIndex, byte[] chunkData,
             String chunkHash, Node node) throws Exception {
 
-        // Conectar al nodo via RMI
+        logger.info("Intentando conectar al nodo ID: " + node.getId() + " RMI: " + node.getRmiUrl());
         RMIStorageNodeClient client = new RMIStorageNodeClient(node.getRmiUrl());
-
         if (!client.connect()) {
+            logger.severe("No se pudo conectar al nodo: " + node.getRmiUrl());
             throw new Exception("No se pudo conectar al nodo: " + node.getRmiUrl());
         }
-
         try {
-            // Almacenar chunk en el nodo
             String chunkId = fileId + "_" + chunkIndex;
+            logger.info("Almacenando chunk en nodo. chunkId: " + chunkId + ", chunkIndex: " + chunkIndex);
             boolean stored = client.storeFileChunk(chunkId, chunkIndex, chunkData);
-
             if (!stored) {
+                logger.severe("Nodo rechazó el almacenamiento del chunk " + chunkIndex);
                 throw new Exception("Nodo rechazó el almacenamiento del chunk");
             }
-
-            // Registrar chunk en BD
             FileChunk chunk = new FileChunk();
             chunk.setFileId(fileId);
             chunk.setChunkIndex(chunkIndex);
             chunk.setNodeId(node.getId());
             chunk.setChecksum(chunkHash);
             chunk.setReplicated(false);
-
+            logger.info("Registrando chunk en BD: file_id=" + fileId + ", node_id=" + node.getId() + ", chunk_index=" + chunkIndex);
             fileChunkDAO.save(chunk);
-
-            logger.info("Chunk " + chunkIndex + " almacenado exitosamente en nodo " +
-                    node.getIp() + ":" + node.getPort());
-
+            logger.info("Chunk " + chunkIndex + " almacenado exitosamente en nodo " + node.getIp() + ":" + node.getPort());
         } finally {
             client.disconnect();
         }

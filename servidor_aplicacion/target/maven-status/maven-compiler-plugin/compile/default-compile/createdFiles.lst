@@ -19,6 +19,7 @@ servidor\aplicacion\rmi\StorageNode.class
 servidor\aplicacion\rmi\StorageNodesLauncher$NodeConfig.class
 servidor\aplicacion\dto\UploadFileRequest.class
 servidor\aplicacion\util\FileChunkConverter.class
+servidor\aplicacion\dto\DirectoriesWrapper.class
 servidor\aplicacion\dto\LoginResponse.class
 servidor\aplicacion\model\Session.class
 servidor\aplicacion\rmi\FileServiceRMIImpl.class

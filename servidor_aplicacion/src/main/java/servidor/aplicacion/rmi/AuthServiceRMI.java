@@ -11,9 +11,6 @@ public interface AuthServiceRMI extends Remote {
         LoginResponse login(String username, String password)
                         throws RemoteException;
 
-        LoginResponse loginSimple(String username, String password)
-                        throws RemoteException;
-
         UserDTO getUserById(Long userId)
                         throws RemoteException;
 

@@ -29,13 +29,6 @@ public class AuthServiceSOAPImpl implements AuthServiceSOAP {
     }
 
     @Override
-    public LoginResponseSOAP loginSimple(String username, String password) {
-        // Método de login alternativo para datos de prueba
-        LoginResponse response = authService.loginWithSimpleHash(username, password);
-        return new LoginResponseSOAP(response);
-    }
-
-    @Override
     public UserDTO getUserById(Long userId) {
         return authService.getUserById(userId);
     }

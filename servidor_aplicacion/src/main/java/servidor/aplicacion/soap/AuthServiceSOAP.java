@@ -11,14 +11,9 @@ import java.util.List;
 @WebService(name = "AuthService", targetNamespace = "http://soap.aplicacion.servidor/")
 public interface AuthServiceSOAP {
 
-    @WebMethod(operationName = "loginFull")
+    @WebMethod(operationName = "login")
     @WebResult(name = "loginFullResponse")
     LoginResponseSOAP login(@WebParam(name = "username") String username,
-            @WebParam(name = "password") String password);
-
-    @WebMethod(operationName = "loginSimple")
-    @WebResult(name = "loginSimpleResponse")
-    LoginResponseSOAP loginSimple(@WebParam(name = "username") String username,
             @WebParam(name = "password") String password);
 
     @WebMethod

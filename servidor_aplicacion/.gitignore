@@ -17,3 +17,13 @@ out/
 bin/
 build/
 target/
+
+.fake
+
+# Ignorar archivos ZIP
+*.zip
+
+# Ignorar archivos DAT
+*.dat
+
+*.lst

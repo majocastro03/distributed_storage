@@ -1,6 +1,9 @@
 package servidor.aplicacion.soap;
 
+import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
 import servidor.aplicacion.dao.FileDAO;
 import servidor.aplicacion.dao.FileChunkDAO;
 import servidor.aplicacion.dto.FileDTO;
@@ -8,6 +11,8 @@ import servidor.aplicacion.manager.NodeManager;
 import servidor.aplicacion.model.File;
 import servidor.aplicacion.service.DistributedFileService;
 import servidor.aplicacion.util.FileConverter;
+
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,6 +23,7 @@ import java.util.logging.Logger;
  */
 @WebService(endpointInterface = "servidor.aplicacion.soap.FileServiceSOAP")
 public class FileServiceSOAPImpl implements FileServiceSOAP {
+
     
     private static final Logger logger = Logger.getLogger(FileServiceSOAPImpl.class.getName());
     private final DistributedFileService distributedFileService;
@@ -37,6 +43,14 @@ public class FileServiceSOAPImpl implements FileServiceSOAP {
         // Log de debugging detallado
         logger.info("=== SOAP Upload Debug ===");
         logger.info("Raw name parameter: '" + name + "'");
+        if (name == null) {
+            logger.warning("El parámetro 'name' llegó como null");
+        } else {
+            logger.warning("El parámetro 'name' tiene longitud: " + name.length());
+            for (int i = 0; i < name.length(); i++) {
+                logger.warning("name.charAt(" + i + ") = '" + name.charAt(i) + "' (int: " + (int)name.charAt(i) + ")");
+            }
+        }
         logger.info("Raw parentId parameter: " + parentId);
         logger.info("Raw ownerId parameter: " + ownerId);
         logger.info("Raw type parameter: " + type);
@@ -87,6 +101,24 @@ public class FileServiceSOAPImpl implements FileServiceSOAP {
             return errorResult;
         }
     }
+
+        @Override
+        public List<FileDTO> uploadFiles(List<FileDTO> files) throws Exception {
+            List<FileDTO> result = new java.util.ArrayList<>();
+            if (files != null) {
+                for (FileDTO fileDTO : files) {
+                    FileDTO uploaded = uploadFile(
+                        fileDTO.getName(),
+                        fileDTO.getParentId(),
+                        fileDTO.getOwnerId(),
+                        fileDTO.getType(),
+                        fileDTO.getData() // requiere campo 'data' en FileDTO
+                    );
+                    result.add(uploaded);
+                }
+            }
+            return result;
+        }
     
     @Override
     public String downloadFile(Long fileId, Long userId) throws Exception {
@@ -103,6 +135,18 @@ public class FileServiceSOAPImpl implements FileServiceSOAP {
             throw new Exception("Error downloading file: " + e.getMessage());
         }
     }
+
+        @Override
+        public List<String> downloadFiles(List<Long> fileIds, Long userId) throws Exception {
+            List<String> result = new java.util.ArrayList<>();
+            if (fileIds != null) {
+                for (Long fileId : fileIds) {
+                    String fileData = downloadFile(fileId, userId);
+                    result.add(fileData);
+                }
+            }
+            return result;
+        }
     
     @Override
     public List<FileDTO> listFiles(Long parentId, Long userId) {

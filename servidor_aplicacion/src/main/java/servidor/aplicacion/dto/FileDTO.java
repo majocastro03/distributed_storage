@@ -1,10 +1,14 @@
 package servidor.aplicacion.dto;
 
 import java.io.Serializable;
-// BIEN :)
-public class FileDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+// BIEN :)
+@XmlRootElement(name = "directory")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class FileDTO implements Serializable {
     private Long id;
     private String name;
     private Long parentId;
@@ -13,8 +17,17 @@ public class FileDTO implements Serializable {
     private Long size;
     private String createdAt;
     private String updatedAt;
+    private String data; // base64 del archivo
 
     public FileDTO() {
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public FileDTO(Long id, String name, Long parentId, Long ownerId,
