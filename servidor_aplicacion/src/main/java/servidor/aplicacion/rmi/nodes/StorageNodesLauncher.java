@@ -19,8 +19,6 @@ public class StorageNodesLauncher {
     private final List<StorageNodeServer> activeNodes = new ArrayList<>();
 
     public void startAllNodes() {
-        logger.info("Starting all storage nodes...");
-
         // Crear directorios de almacenamiento si no existen
         for (NodeConfig config : DEFAULT_NODES) {
             createStorageDirectory(config.storagePath);
@@ -42,10 +40,9 @@ public class StorageNodesLauncher {
                     }
 
                     server.start();
-                    logger.info("Node " + config.nodeName + " started successfully");
 
                 } catch (Exception e) {
-                    logger.severe("Failed to start node " + config.nodeName + ": " + e.getMessage());
+                    logger.severe("Fallo en " + config.nodeName + ": " + e.getMessage());
                 }
             });
 
@@ -63,7 +60,6 @@ public class StorageNodesLauncher {
         // Esperar a que todos los nodos estén iniciados
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                 .thenRun(() -> {
-                    logger.info("All storage nodes started successfully!");
                     System.out.println("\nNodos: " + DEFAULT_NODES.length + " iniciados");
                     for (NodeConfig config : DEFAULT_NODES) {
                         System.out.println(config.nodeName + " puerto " + config.port + " - OK");
@@ -73,20 +69,16 @@ public class StorageNodesLauncher {
     }
 
     public void stopAllNodes() {
-        logger.info("Stopping all storage nodes...");
-
         synchronized (activeNodes) {
             for (StorageNodeServer server : activeNodes) {
                 try {
                     server.stop();
                 } catch (Exception e) {
-                    logger.warning("Error stopping node: " + e.getMessage());
+                    logger.warning("Error al detener nodo: " + e.getMessage());
                 }
             }
             activeNodes.clear();
         }
-
-        logger.info("All storage nodes stopped");
     }
 
     private void createStorageDirectory(String path) {
@@ -95,13 +87,13 @@ public class StorageNodesLauncher {
             if (!dir.exists()) {
                 boolean created = dir.mkdirs();
                 if (created) {
-                    logger.info("Created storage directory: " + path);
+                    logger.info("Directorio de almacenamiento creado: " + path);
                 } else {
-                    logger.warning("Failed to create storage directory: " + path);
+                    logger.warning("Error al crear directorio de almacenamiento: " + path);
                 }
             }
         } catch (Exception e) {
-            logger.warning("Error creating storage directory " + path + ": " + e.getMessage());
+            logger.warning("Error al crear directorio de almacenamiento " + path + ": " + e.getMessage());
         }
     }
 

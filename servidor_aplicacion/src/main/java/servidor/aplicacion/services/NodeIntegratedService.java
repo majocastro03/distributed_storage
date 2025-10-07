@@ -102,7 +102,6 @@ public class NodeIntegratedService {
     
     // Registrar nodos de almacenamiento en el sistema
     public void registerSystemNodes() {
-        logger.info("Registering system nodes...");
         nodeManager.initializeDefaultNodes();
     }
     
@@ -119,11 +118,9 @@ public class NodeIntegratedService {
     // Verificar estado de salud y conectividad de todos los nodos
     public void checkNodeHealth() {
         List<Node> onlineNodes = nodeManager.getOnlineNodes();
-        logger.info("Checking health of " + onlineNodes.size() + " online nodes");
-        
         for (Node node : onlineNodes) {
             boolean available = nodeManager.isNodeAvailable(node);
-            logger.info("Node " + node.getIp() + ":" + node.getPort() + " is " + (available ? "available" : "not available"));
+            logger.info("El nodo " + node.getIp() + ":" + node.getPort() + " está " + (available ? "disponible" : "no disponible"));
         }
     }
     

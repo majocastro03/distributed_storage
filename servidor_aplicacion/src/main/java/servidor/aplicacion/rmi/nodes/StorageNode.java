@@ -41,8 +41,6 @@ public class StorageNode extends UnicastRemoteObject implements NodeInterface {
 
         // Cargar archivos existentes en el índice del nodo
         loadFileIndex();
-
-        logger.info("Storage node initialized: " + nodeName + " at " + storagePath);
     }
 
     @Override
@@ -293,11 +291,8 @@ public class StorageNode extends UnicastRemoteObject implements NodeInterface {
                             }
                         }
                     });
-
-            logger.info("Loaded file index with " + fileIndex.size() + " entries");
-
         } catch (IOException e) {
-            logger.warning("Failed to load file index: " + e.getMessage());
+            logger.warning("Error al cargar el índice de archivos: " + e.getMessage());
         }
     }
 

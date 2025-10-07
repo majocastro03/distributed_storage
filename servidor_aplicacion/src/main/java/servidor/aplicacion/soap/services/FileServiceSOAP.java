@@ -28,7 +28,6 @@ public class FileServiceSOAP implements FileInterfaceSOAP {
         NodeManager nodeManager = new NodeManager();
         
         this.distributedFileService = new DistributedFileService(fileDAO, fileChunkDAO, nodeManager);
-        logger.info("FileServiceSOAP inicializado con sistema distribuido");
     }
     
     @Override

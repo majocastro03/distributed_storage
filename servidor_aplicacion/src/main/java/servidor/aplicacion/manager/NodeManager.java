@@ -33,19 +33,19 @@ public class NodeManager {
         try {
             // Verificar si el nodo ya existe
             if (nodeDAO.nodeExists(ip, port)) {
-                logger.warning("Node already exists: " + ip + ":" + port);
+                logger.warning("Nodo ya existe: " + ip + ":" + port);
                 return nodeDAO.getNodeByIpAndPort(ip, port);
             }
 
             Node node = new Node(ip, port);
             Node registeredNode = nodeDAO.registerNode(node);
 
-            logger.info("Node registered successfully: " + ip + ":" + port + " with ID: " + registeredNode.getId());
+            logger.info("Nodo registrado exitosamente: " + ip + ":" + port + " con ID: " + registeredNode.getId());
             return registeredNode;
 
         } catch (Exception e) {
-            logger.severe("Error registering node " + ip + ":" + port + ": " + e.getMessage());
-            throw new RuntimeException("Failed to register node: " + ip + ":" + port, e);
+            logger.severe("Error al registrar nodo " + ip + ":" + port + ": " + e.getMessage());
+            throw new RuntimeException("Error al registrar nodo: " + ip + ":" + port, e);
         }
     }
 
@@ -64,7 +64,7 @@ public class NodeManager {
         List<Node> onlineNodes = getOnlineNodes();
 
         if (onlineNodes.isEmpty()) {
-            logger.warning("No online nodes available");
+            logger.warning("No hay nodos online disponibles");
             return null;
         }
 
@@ -74,12 +74,12 @@ public class NodeManager {
                 .toList();
 
         if (storageNodes.isEmpty()) {
-            logger.warning("No valid storage nodes available (ports 1100-1199)");
+            logger.warning("No hay nodos de almacenamiento válidos disponibles (puertos 1100-1199)");
             return null;
         }
 
         Node selectedNode = storageNodes.get(0);
-        logger.info("Selected storage node: " + selectedNode.getIp() + ":" + selectedNode.getPort());
+        logger.info("Nodo de almacenamiento seleccionado: " + selectedNode.getIp() + ":" + selectedNode.getPort());
         return selectedNode;
     }
 
@@ -87,11 +87,11 @@ public class NodeManager {
         try {
             boolean updated = nodeDAO.updateHeartbeat(nodeId);
             if (updated) {
-                logger.fine("Heartbeat updated for node ID: " + nodeId);
+                logger.fine("Heartbeat actualizado para el nodo ID: " + nodeId);
             }
             return updated;
         } catch (Exception e) {
-            logger.warning("Failed to update heartbeat for node ID " + nodeId + ": " + e.getMessage());
+            logger.warning("Error al actualizar heartbeat para el nodo ID " + nodeId + ": " + e.getMessage());
             return false;
         }
     }
@@ -101,7 +101,7 @@ public class NodeManager {
         try {
             return nodeDAO.updateNodeStatus(nodeId, Node.STATUS_OFFLINE, LocalDateTime.now());
         } catch (Exception e) {
-            logger.warning("Failed to mark node as offline: " + e.getMessage());
+            logger.warning("Error al marcar nodo como offline: " + e.getMessage());
             return false;
         }
     }
@@ -111,7 +111,7 @@ public class NodeManager {
         try {
             return nodeDAO.updateNodeStatus(nodeId, Node.STATUS_ONLINE, LocalDateTime.now());
         } catch (Exception e) {
-            logger.warning("Failed to mark node as online: " + e.getMessage());
+            logger.warning("Error al marcar nodo como online: " + e.getMessage());
             return false;
         }
     }
@@ -137,7 +137,7 @@ public class NodeManager {
             return available;
 
         } catch (Exception e) {
-            logger.warning("Node " + node.getIp() + ":" + node.getPort() + " is not available: " + e.getMessage());
+            logger.warning("El nodo " + node.getIp() + ":" + node.getPort() + " no está disponible: " + e.getMessage());
             markNodeAsOffline(node.getId());
             return false;
         }
@@ -152,17 +152,16 @@ public class NodeManager {
         long maintenanceNodes = allNodes.stream().filter(Node::isInMaintenance).count();
 
         return String.format(
-                "Nodes Statistics:\n" +
-                        "Total Nodes: %d\n" +
-                        "Online Nodes: %d\n" +
-                        "Offline Nodes: %d\n" +
-                        "Maintenance Nodes: %d",
+                "Estadísticas de Nodos:\n" +
+                        "Total de Nodos: %d\n" +
+                        "Nodos Online: %d\n" +
+                        "Nodos Offline: %d\n" +
+                        "Nodos en Mantenimiento: %d",
                 totalNodes, onlineNodes, offlineNodes, maintenanceNodes);
     }
 
     // Inicializar nodos por defecto del sistema
     public void initializeDefaultNodes() {
-        logger.info("Initializing default nodes...");
         cleanupInvalidNodes();
 
         // Definir nodos por defecto
@@ -179,13 +178,12 @@ public class NodeManager {
 
                 if (!nodeDAO.nodeExists(ip, port)) {
                     registerNode(ip, port);
-                    logger.info("Initialized default node: " + ip + ":" + port);
+                    logger.info("Nodo por defecto inicializado: " + ip + ":" + port);
                 } else {
-                    logger.info("Default node already exists: " + ip + ":" + port);
                 }
             } catch (Exception e) {
                 logger.warning(
-                        "Failed to initialize default node " + nodeInfo[0] + ":" + nodeInfo[1] + ": " + e.getMessage());
+                        "Error al inicializar nodo por defecto " + nodeInfo[0] + ":" + nodeInfo[1] + ": " + e.getMessage());
             }
         }
     }
@@ -193,7 +191,6 @@ public class NodeManager {
     // Iniciar monitoreo de salud de nodos
     private void startNodeHealthMonitoring() {
         scheduler.scheduleAtFixedRate(this::checkNodesHealth, 1, 2, TimeUnit.MINUTES);
-        logger.info("Node health monitoring started");
     }
 
     // Verificar la salud de todos los nodos
@@ -207,12 +204,12 @@ public class NodeManager {
                     long minutesSinceLastHeartbeat = ChronoUnit.MINUTES.between(node.getLastHeartbeat(), now);
 
                     if (minutesSinceLastHeartbeat > HEARTBEAT_TIMEOUT_MINUTES) {
-                        logger.warning("Node " + node.getIp() + ":" + node.getPort() + " hasn't sent heartbeat for "
-                                + minutesSinceLastHeartbeat + " minutes");
+                        logger.warning("El nodo " + node.getIp() + ":" + node.getPort() + " no ha enviado latido por "
+                                + minutesSinceLastHeartbeat + " minutos");
 
                         // Intentar hacer ping
                         if (!isNodeAvailable(node)) {
-                            logger.warning("Marking node " + node.getIp() + ":" + node.getPort() + " as OFFLINE");
+                            logger.warning("Marcando nodo " + node.getIp() + ":" + node.getPort() + " como OFFLINE");
                             markNodeAsOffline(node.getId());
                         }
                     }
@@ -220,7 +217,7 @@ public class NodeManager {
 
             } catch (Exception e) {
                 logger.severe(
-                        "Error checking health of node " + node.getIp() + ":" + node.getPort() + ": " + e.getMessage());
+                        "Error al verificar la salud del nodo " + node.getIp() + ":" + node.getPort() + ": " + e.getMessage());
             }
         }
     }
@@ -243,14 +240,14 @@ public class NodeManager {
                         node.getPort() == 8080 || node.getPort() == 8081 ||
                         node.getPort() == 8082 || node.getPort() == 1099) {
 
-                    logger.info("Marking invalid node as offline: " + node.getIp() + ":" + node.getPort() +
-                            " (not a storage node)");
+                    logger.info("Marcando nodo inválido como offline: " + node.getIp() + ":" + node.getPort() +
+                            " (no es un nodo de almacenamiento)");
                     markNodeAsOffline(node.getId());
                 }
             }
 
         } catch (Exception e) {
-            logger.warning("Error during cleanup of invalid nodes: " + e.getMessage());
+            logger.warning("Error durante la limpieza de nodos inválidos: " + e.getMessage());
         }
     }
 
@@ -267,6 +264,6 @@ public class NodeManager {
                 Thread.currentThread().interrupt();
             }
         }
-        logger.info("NodeManager shutdown completed");
+        logger.info("Cierre de NodeManager completado");
     }
 }

@@ -23,18 +23,10 @@ public class StorageNodeServer {
         try {
             // Crear el registro RMI en el puerto específico del nodo
             registry = LocateRegistry.createRegistry(port);
-            logger.info("RMI Registry created on port " + port);
-
             // Crear la instancia del nodo de almacenamiento
             storageNode = new StorageNode(nodeName, storagePath);
-
             // Registrar el nodo en el registro RMI
             registry.bind("StorageNode", storageNode);
-
-            logger.info("Storage Node '" + nodeName + "' started successfully on port " + port);
-            logger.info("Storage path: " + storagePath);
-            logger.info("RMI URL: rmi://localhost:" + port + "/StorageNode");
-
         } catch (Exception e) {
             logger.severe("Failed to start Storage Node '" + nodeName + "': " + e.getMessage());
             e.printStackTrace();
