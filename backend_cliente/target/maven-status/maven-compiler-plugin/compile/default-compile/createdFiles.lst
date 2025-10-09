@@ -1,3 +1,5 @@
+backend\cliente\controller\FileController.class
 backend\cliente\App.class
-backend\cliente\AuthRMITestClient.class
-backend\cliente\RMITestClient.class
+backend\cliente\soap\SoapClients$1.class
+backend\cliente\controller\UserController.class
+backend\cliente\soap\SoapClients.class

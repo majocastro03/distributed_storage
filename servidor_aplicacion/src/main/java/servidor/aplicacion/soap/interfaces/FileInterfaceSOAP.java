@@ -4,6 +4,7 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import servidor.aplicacion.dto.FileDTO;
+import servidor.aplicacion.dto.DirectoryListDTO;
 import java.util.List;
 
 @WebService(name = "FileInterfaceSOAP", targetNamespace = "http://soap.aplicacion.servidor/")
@@ -39,6 +40,9 @@ public interface FileInterfaceSOAP {
     FileDTO createDirectory(@WebParam(name = "name") String name,
                            @WebParam(name = "parentId") Long parentId,
                            @WebParam(name = "ownerId") Long ownerId) throws Exception;
+
+    @WebMethod
+    List<FileDTO> createDirectories(@WebParam(name = "directories") DirectoryListDTO directories) throws Exception;
 
     @WebMethod
     FileDTO getFileInfo(@WebParam(name = "fileId") Long fileId,

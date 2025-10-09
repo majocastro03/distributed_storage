@@ -1,5 +1,6 @@
 servidor\aplicacion\model\User.class
 servidor\aplicacion\util\FileConverter.class
+servidor\aplicacion\dto\DirectoryListDTO.class
 servidor\aplicacion\dto\UserDTO.class
 servidor\aplicacion\dao\SessionDAO.class
 servidor\aplicacion\rmi\services\FileServiceRMI.class
@@ -30,6 +31,7 @@ servidor\aplicacion\soap\interfaces\FileInterfaceSOAP.class
 servidor\aplicacion\dao\OperationLogDAO.class
 servidor\aplicacion\model\Node.class
 servidor\aplicacion\dto\LoginRequest.class
+servidor\aplicacion\App$1.class
 servidor\aplicacion\services\NodeIntegratedService.class
 servidor\aplicacion\dto\LoginResponseSOAP.class
 servidor\aplicacion\rmi\nodes\StorageNode.class

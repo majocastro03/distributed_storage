@@ -133,5 +133,16 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <!-- Provide exec plugin so you can run: mvn -f servidor_aplicacion exec:java -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <mainClass>servidor.aplicacion.App</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

@@ -3,6 +3,7 @@ import jakarta.jws.WebService;
 import servidor.aplicacion.dao.FileDAO;
 import servidor.aplicacion.dao.FileChunkDAO;
 import servidor.aplicacion.dto.FileDTO;
+import servidor.aplicacion.dto.DirectoryListDTO;
 import servidor.aplicacion.manager.NodeManager;
 import servidor.aplicacion.model.File;
 import servidor.aplicacion.services.DistributedFileService;
@@ -184,6 +185,22 @@ public class FileServiceSOAP implements FileInterfaceSOAP {
             logger.severe("Error en SOAP create directory: " + e.getMessage());
             throw new Exception("Error creating directory: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<FileDTO> createDirectories(DirectoryListDTO directories) throws Exception {
+        List<FileDTO> result = new java.util.ArrayList<>();
+        if (directories != null && directories.getDirectories() != null) {
+            logger.info("SOAP Create directories request: " + directories.getDirectories().size() + " directories");
+            for (FileDTO dir : directories.getDirectories()) {
+                logger.info("Creating directory: " + dir.getName() + " (owner: " + dir.getOwnerId() + ")");
+                FileDTO created = createDirectory(dir.getName(), dir.getParentId(), dir.getOwnerId());
+                result.add(created);
+            }
+        } else {
+            logger.warning("SOAP Create directories request: lista vacía o nula");
+        }
+        return result;
     }
     
     @Override

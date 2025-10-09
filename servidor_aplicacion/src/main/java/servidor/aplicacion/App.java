@@ -4,6 +4,16 @@ import java.sql.Connection;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
+import java.io.FileInputStream;
+import java.net.InetSocketAddress;
+import java.security.KeyStore;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import com.sun.net.httpserver.HttpsServer;
+import com.sun.net.httpserver.HttpsConfigurator;
+import com.sun.net.httpserver.HttpsParameters;
+import com.sun.net.httpserver.HttpContext;
 import jakarta.xml.ws.Endpoint;
 
 import servidor.aplicacion.config.DatabaseConnection;
@@ -116,16 +126,76 @@ public class App {
             FileServiceSOAP fileServiceSOAP = new FileServiceSOAP();
             AuthServiceSOAP authServiceSOAP = new AuthServiceSOAP();
 
-            // Publicar los servicios
-            Endpoint fileEndpoint = Endpoint.publish(FILE_SOAP_URL, fileServiceSOAP);
-            Endpoint authEndpoint = Endpoint.publish(AUTH_SOAP_URL, authServiceSOAP);
+            // Comprobar si existe configuración de keystore para HTTPS
+            String ksPath = System.getProperty("server.keystore.path");
+            String ksPass = System.getProperty("server.keystore.password");
+            String host = System.getProperty("server.host", "localhost");
 
-            if (fileEndpoint.isPublished()) {
-                System.out.println("SOAP File: OK");
-            }
+            if (ksPath != null && ksPass != null) {
+                // Intentar publicar sobre HTTPS usando HttpsServer
+                int filePort = 8080;
+                int authPort = 8081;
+                System.out.println("Iniciando SOAP sobre HTTPS usando keystore: " + ksPath);
 
-            if (authEndpoint.isPublished()) {
-                System.out.println("SOAP Auth: OK");
+                // File service HTTPS
+                HttpsServer httpsFile = HttpsServer.create(new InetSocketAddress(host, filePort), 0);
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+
+                // inicializar keystore
+                char[] password = ksPass.toCharArray();
+                KeyStore ks = KeyStore.getInstance("JKS");
+                try (FileInputStream fis = new FileInputStream(ksPath)) {
+                    ks.load(fis, password);
+                }
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+                kmf.init(ks, password);
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                tmf.init(ks);
+                sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+
+                httpsFile.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+                    public void configure(HttpsParameters params) {
+                        try {
+                            SSLContext c = getSSLContext();
+                            params.setNeedClientAuth(false);
+                            params.setCipherSuites(c.getSocketFactory().getDefaultCipherSuites());
+                            params.setProtocols(new String[] { "TLSv1.2", "TLSv1.3" });
+                        } catch (Exception ex) {
+                            System.err.println("Error configurando HTTPS parameters: " + ex.getMessage());
+                        }
+                    }
+                });
+
+                // Crear context y publicar endpoint para file service
+                HttpContext fileCtx = httpsFile.createContext("/fileservice");
+                Endpoint fileEndpoint = Endpoint.create(fileServiceSOAP);
+                fileEndpoint.publish(fileCtx);
+
+                // Auth service HTTPS
+                HttpsServer httpsAuth = HttpsServer.create(new InetSocketAddress(host, authPort), 0);
+                httpsAuth.setHttpsConfigurator(new HttpsConfigurator(sslContext));
+                HttpContext authCtx = httpsAuth.createContext("/authservice");
+                Endpoint authEndpoint = Endpoint.create(authServiceSOAP);
+                authEndpoint.publish(authCtx);
+
+                httpsFile.start();
+                httpsAuth.start();
+
+                System.out.println("SOAP File (HTTPS): https://" + host + ":" + filePort + "/fileservice?wsdl");
+                System.out.println("SOAP Auth (HTTPS): https://" + host + ":" + authPort + "/authservice?wsdl");
+            } else {
+                // Sin keystore, usar HTTP (fallback para testing local)
+                System.out.println("Keystore no definido, publicando SOAP en HTTP (fallback local)");
+                Endpoint fileEndpoint = Endpoint.publish(FILE_SOAP_URL, fileServiceSOAP);
+                Endpoint authEndpoint = Endpoint.publish(AUTH_SOAP_URL, authServiceSOAP);
+
+                if (fileEndpoint.isPublished()) {
+                    System.out.println("SOAP File: OK");
+                }
+
+                if (authEndpoint.isPublished()) {
+                    System.out.println("SOAP Auth: OK");
+                }
             }
 
         } catch (Exception e) {

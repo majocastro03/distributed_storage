@@ -34,6 +34,7 @@ C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\rmi\services\AuthServiceRMI.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\manager\NodeManager.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dao\FileDAO.java
+C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\DirectoryListDTO.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\FileDTO.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\interfaces\FileInterface.java
 C:\Proyectos\Distribuidos\servidor_aplicacion\src\main\java\servidor\aplicacion\dto\FileChunkDTO.java
